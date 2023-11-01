@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './app.css';
 
 function App() {
   const [name, setName] = useState("");
@@ -35,7 +36,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="container">
       <h1>This is React WebApp</h1>
       <form>
         <input
