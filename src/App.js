@@ -1,27 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 function App() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [userNames, setUserNames] = useState([]);
 
-  useEffect(() => {
-    axios.get('http://localhost:5000/')
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("GET request error:", error);
-      });
-  }, []);
-
-  const handleOnSubmit = () => {
-
-
+  const handlePost = () => {
     axios.post('http://localhost:5000/register', { name, email })
       .then((response) => {
         const result = response.data;
-        console.log(result);
         if (result) {
           alert("Data saved successfully");
           setEmail("");
@@ -31,6 +19,18 @@ function App() {
       .catch((error) => {
         console.error("POST request error:", error);
         alert("Something went wrong when saving data.");
+      });
+  }
+
+  const handleGet = () => {
+    axios.get('http://localhost:5000/')
+      .then((response) => {
+        const users = response.data;
+        const names = users.map((user) => user.name);
+        setUserNames(names);
+      })
+      .catch((error) => {
+        console.error("GET request error:", error);
       });
   }
 
@@ -50,8 +50,10 @@ function App() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <button type="submit" onClick={handleOnSubmit}>Submit</button>
+        <button type="button" onClick={handlePost}>Post</button>
+        <button type="button" onClick={handleGet}>Get</button>
       </form>
+      <p>Names: {userNames.join(", ")}</p>
     </div>
   );
 }
